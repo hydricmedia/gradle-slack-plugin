@@ -63,7 +63,17 @@ slack {
 *	dependsOnTasks: let you specify a list of tasks that will trigger a message to slack, in case of error and success;
 *	title: the title of the slack message, can be the name of your app for instance;
 *	enabled: a boolean to define if the slack integration is active or not, useful to avoid sending messages on your local builds.
+* titleBuilder: as alternative to `title` which is set before compilation, `titleBuilder` takes a `Closure<String>` which is evaluated after compilation and can be used to dynamically generate the title.
 
+```groovy
+slack {
+    dependsOnTasks 'uploadReleaseToHockeyApp'
+    titleBuilder {
+        def hockeyUpResp = new JsonSlurper().parse(new File(buildDir, "HockeyApp/release/success.json"))
+        return "${hockeyUpResp.title} Android (Version ${rootProject.gitInfo.latestTag}) successfully deployed to Hockey app: Download it at ${hockeyUpResp.public_url}"
+    }
+}
+```
 
 ## Credits
 
