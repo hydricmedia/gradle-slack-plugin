@@ -5,7 +5,8 @@ package com.mindera.gradle.slack
 class SlackPluginExtension {
     String url
     List<Object> dependsOnTasks
-    String title
+    String title = ""
+    Closure<String> titleBuilder = { title }
     boolean enabled = true
 
     void dependsOnTasks(Object... paths) {
